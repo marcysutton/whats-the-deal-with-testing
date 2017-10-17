@@ -1,0 +1,794 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>What’s the Deal with Testing?!? - Marcy Sutton</title>
+
+		<meta name="description" content="What’s the Deal with Testing?!?">
+		<meta name="author" content="Marcy Sutton">
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+
+		<!-- <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> -->
+
+		<link rel="stylesheet" href="css/reveal.css">
+
+		<!-- For syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/tomorrow-night-bright.css">
+
+		<!-- If the query includes 'print-pdf', include the PDF print sheet -->
+		<script>
+      var link = document.createElement( 'link' );
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/theme/marcysutton.css';
+      document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+		<div class="reveal">
+			<div class="slides">
+        <section data-background-image="img/cartoon/seinfeld-car-ride.jpg" data-state="hide-footer">
+          <h2 class="offscreen">Seinfeld cast riding in a car</h2>
+          <aside class="notes">Imagine going anywhere in a car in downtown New York with the cast of <em>Seinfeld</em>. Material is falling from the car's ceiling, someone's hollering about some petty grievance, and you're late to an appointment. You'd want to speed things up, right? Make it less painful next time you had to ride in the car?
+          </aside>
+        </section>
+
+        <section data-background-image="img/cartoon/bluesky-thumbs-shipping.jpg" data-state="hide-footer">
+          <div class="headlineOverImg">
+            <h2 class="h1-style">Shipping code</h2>
+            <h3 class="h2-style">with humans, computers</h3>
+          </div>
+          <aside class="notes">
+          Shipping code, not losing your mind by testing manually
+
+          Working w/ other people, who could misinterpret, modify or delete code
+
+          Maintaining over time, asserting it works for written purpose
+
+          Asserting code w/ computers to provide time, bandwidth.
+
+          Core fear of working without tests once relying on them.  I personally don't want a comedy of errors every time I try to launch something.
+          </aside>
+        </section>
+
+        <section data-background-image="img/automate.gif" data-state="hide-footer">
+          <h2 class="offscreen">Process</h2>
+          <aside class="notes">
+          More throughput if you automate things. 
+          Process means less time figuring out what to do at launch, launching the damn thing.
+          Important for maintenance, quality.
+          How much of the process is manual, how much is automated? Even if you're creating a boutique hand-crafted solution for a customer, are there areas where you could speed up the process by not doing it by hand?
+          https://www.process.st/interactive-processes-vs-automated-processes/
+          </aside>
+        </section>
+
+        <section data-state="hide-footer">
+          <blockquote>
+            <div class="blockquote-content">
+              <h2 class="h4-style">*whispers*<br>
+              I don’t understand tests. If my code breaks, I get errors. I know already.</h2>
+              <cite><a href="https://twitter.com/heydonworks/status/876809476124180481">- Heydon Pickering</a></cite>
+            </div>
+          </blockquote>
+          <blockquote style="margin-top: 1.5em;" class="fragment">
+            <div class="blockquote-content">
+              <h2 class="h4-style">I don’t really understand tests either tbh 😂</h2>
+              <cite><a href="https://twitter.com/Una/status/876809697810153472">- Una Kravets</a></cite>
+            </div>
+          </blockquote>
+          <aside class="notes">
+          Saw tweet exchange of Heydon, Una replying to Max Stoiber, remembered when I didn't understand tests. Didn't see value in it, yet now I can't do my job without automated software tests. 
+          Why is that? how can I convince more people of their value? 
+          Goal isn't to shame anyone. There are a million different ways to work! 
+          Just want to share growth I felt leveling up as creator of software
+          </aside>
+       </section>
+
+				<section data-state="title-slide">
+          <h1>What’s the Deal<br>with Testing?!?</h1>
+					<p>Marcy Sutton – Senior Front-End Engineer, Deque Systems<br>
+          <a href="http://marcysutton.com/smashingBCN17">http://marcysutton.com/smashingBCN17</a> – <a href="https://twitter.com/marcysutton">@marcysutton</a></p>
+          <aside class="notes">
+          This is where I hope to let you in on some of the things I've learned about the value of testing in my career as a front-end engineer. My hope is that if you're not already testing, by the end of this talk you start to see good reasons to incorporate it.
+          </aside>
+				</section>
+
+        <section>
+          <h2>Testing, you say?</h2>
+          <ul>
+            <li class="fragment">Why write automated tests?</li>
+            <li class="fragment">Do I really have to?</li>
+            <li class="fragment">How do I, even?</li>
+          </ul>
+          <aside class="notes">
+          Here's what we'll talk about today. I hope by the end of this talk, you'll have answers to these questions:
+
+          We can't cover all techniques or scenarios, but we'll talk about some useful tools and testing approaches for front-end development
+          </aside>
+        </section>
+
+        <section data-state="hide-footer" data-background-image="img/cartoon/seinfeld-kramer-napkins.jpg" data-background-size="contain" data-background-position="bottom center">
+          <h3 class="h2-style smaller headlineOverImg">Designing software components</h3>
+          <aside class="notes">
+          Most important part of unit testing and TDD
+          </aside>
+        </section>
+
+        <section data-background-image="img/cartoon/tupperware.jpg" data-state="hide-footer">
+          <div style="">
+            <h3 class="h2-style headlineOverImg">Maintaining Quality</h3>
+          </div>
+          <aside class="notes">
+            I was primarily motivated to learn testing to maintain quality in my own software! I broke a JavaScript module implementation on a page I didn't realize had included the same code. Oops.
+          </aside>
+        </section>
+
+        <section data-background-image="img/cartoon/seinfeld-pants-on.jpg" data-background-position="center bottom" data-state="hide-footer" style="padding-top: 0;" data-background-size="cover">
+          <h3 class="h2-style headlineOverImg">Working with People</h3>
+          <aside class="notes">Maybe you think you're invincible. You're incredible at testing manually fast, even for accessibility. What about your colleagues? Do they spend an equal amount of time testing manually? (Is that even how _you_ should be spending your time? You could be freed up for other things.)
+        </section>
+
+        <section data-background-image="img/cartoon/documentation.jpg" data-state="hide-footer" data-background-position="0 top">
+          <h3 class="h2-style headlineOverImg" style="padding-left: 0.15em;padding-right:0.25em;">Documenting functionality</h3>
+        </section>
+
+        <section data-background-image="img/cartoon/dot-north-snow.jpg" data-state="hide-footer" style="padding-top: 0;">
+          <div class="headlineOverImg">
+            <h3 class="h2-style">Making Bugs Easier to Find &amp; Fix</h3>
+          </div>
+          <aside class="notes">
+          This especially applies to integration and regression tests, less so for units but they certainly do help
+          </aside>
+        </section>
+
+        <section data-background-image="img/homer-bugs.gif" data-background-size="cover" data-state="hide-footer">
+          <h3 class="offscreen">The goal is to have a steady ratio of code to bugs and a healthy amount of time required to find them</h3>
+        </section>
+
+        <section data-background-image="img/cartoon/rainier-ptarmigan-ridge.jpg">
+          <h3 class="h1-style headlineOverImg">Leveling Up</h3>
+          <aside class="notes">
+            <p>I went from working on websites at agencies to working on Angular.js full-time. I'd seen tests before and started to see there value–then I couldn't do my job without them.</p>
+          </aside>
+        </section>
+
+        <section style="padding-top: 0;" data-state="hide-footer">
+          <h3 class="offscreen">How I started</h3>
+          <div class="layeredFragments">
+            <img data-src="img/revealjs-repo.png" alt="Reveal.js on Github">
+            <img data-src="img/revealjs-repo-test-arrow.png" alt="Reveal.js with test folder pointed out" class="fragment"
+            >
+            <img data-src="img/revealjs-repo-tests.png" alt="Reveal.js test directory" class="fragment">
+            <img data-src="img/revealjs-repo-test.png" alt="Reveal.js test document" class="fragment">
+            <img data-src="img/revealjs-repo-test-scroll.png" alt="Reveal.js test document" class="fragment">
+          </div>
+          <aside class="notes">
+
+          </aside>
+        </section>
+
+        <section data-state="hide-footer" style="padding-top: 4em !important;">
+          <h3 class="h1-style">Manual vs. <br>Automated Testing</h3>
+          <p>...or no testing?</p>
+          <span style="font-size: 3em;">🤔</span>
+          <aside class="notes">
+          Less about cost per defect and more about the cost of not automating anything. It's helpful to devs AND QA to have test automation.
+
+          Manual testing is good for finding bugs, but eats up human resources and can be error-prone.
+          </aside>
+        </section>
+
+        <section data-state="hide-footer">
+          <blockquote>
+            <div class="blockquote-content">
+              <h3 class="h4-style">The human mind has limits. We can only remember so many things; we can really only concentrate on one thing at a time.</h3>
+              <cite><a href="http://idratherbewriting.com/2015/10/27/fix-errors-fast-scrum-agile/">- Jeff Sutherland</a></cite></cite>
+            </div>
+            <span class="icon"></span>
+          </blockquote>
+        </section>
+
+        <section data-background-image="img/cartoon/seinfeld-people-forget.jpg" data-background-position="center bottom" data-state="hide-footer" style="padding-top: 0;" data-background-size="contain">
+          <h3 class="offscreen">People forget. Look at <em>Home Alone</em>. They forgot.</h3>
+        </section>
+
+        <section data-background-image="img/bring-back-the-90s.jpg" data-state="hide-footer">
+          <h3 class="h2-style headlineOverImg">We need all the help<br>we can get.</h3>
+          <aside class="notes">
+            We need healthy workflows a lot more than this lady with a Gofundme fundraiser needs to "bring back the 90s".
+
+            Maybe you're fine with a manual process? There will come a time when automating things is faster and more robust. I don't know about you, but like my free time (and cognitive bandwidth)
+
+            https://www.gofundme.com/g7vzzttg
+          </aside>
+        </section>
+
+        <section data-state="hide-footer">
+          <h2 class="h1-style">Front-End Testing</h2>
+          <ul>
+            <li class="fragment">Accessibility support 👍</li>
+            <li class="fragment">Reusable components 👍</li>
+            <li class="fragment">Code that lives on 👍</li>
+            <li class="fragment">Stuff that breaks 👍</li>
+          </ul>
+        </section>
+
+        <section data-background-image="img/cartoon/seinfeld-prototype.jpg" data-state="hide-footer">
+            <h3 class="headlineOverImg h1-style" style="margin-bottom: 2.5em;">Prototyping</h3>
+            <aside class="notes"><a href="https://kotaku.com/dreaming-of-a-seinfeld-adventure-game-1783553557">-Artwork by Jacob Janerka</a></aside>
+        </section>
+
+        <section data-background-image="img/cartoon/seinfeld-apartment.jpg">
+          <div class="headlineOverImg">
+            <h3 class="h1-style">Where do tests live?</h3>
+          </div>
+        </section>
+
+        <section data-background-image="img/tools-wordcloud.png" data-state="hide-footer">
+          <h3 class="offscreen">Testing tools word cloud</h3>
+        </section>
+
+        <section data-state="hide-footer" style="padding-top: 0 !important;">
+          <h3 class="offscreen">Test location examples in Sublime Text</h3>
+          <div class="layeredFragments">
+            <img data-src="img/axe-devtools-react-tests.jpg" alt="Tests in axe-devtools-react" class="plain">
+            <img data-src="img/axe-core-tests.jpg" alt="Tests in axe-core" class="fragment plain">
+          </div>
+          <aside class="notes">
+            Colocated vs. separate test folder. It may vary for your team! It does even within our own projects
+          </aside>
+        </section>
+
+        <section data-state="hide-footer no-background">
+          <h2 class="h1-style">It’s Meta!</h2>
+          <figure>
+            <img data-src="img/meta-coffeetables.jpg" alt="Kramer's coffee table book on coffee tables" style="min-height: 600px;">
+          </figure>
+          <aside class="notes">
+          Location aside, the general idea of testing code is that it's self-referential
+          </aside>
+        </section>
+
+        <section>
+          <h2 class="h1-style">How to Test?</h2>
+        </section>
+
+        <section data-background-image="img/marky-markdown-youtube.png" data-background-size="cover" data-state="hide-footer" data-background-color="#fff" data-background-position="top left">
+          <h2 class="offscreen">Marky Markdown youtube test file</h2>
+        </section>
+
+        <section data-state="hide-footer" style="padding-top: 0 !important;">
+          <h3 class="offscreen">Testing types</h3>
+          <img style="margin-top: 0;" data-src="img/testing-wordcloud.png" alt="Unit, integration, acceptance, functional, accessibility, regression, end-to-end, performance, continuous integration, snapshot, verification" class="plain">
+          <aside class="notes">
+          I won't cover it all today, but rather focus on testing that makes sense for the front-end. Testing's interpreted differently at every company, and some of these types are subsets of others (i.e. integration > end-to-end)
+          </aside>
+        </section>
+
+        <!-- <section data-state="hide-footer">
+          <div class="inset-width-wider">
+            <blockquote>
+              <div class="blockquote-content">
+                <h3>
+                Write tests. Not too many. <br>Mostly integration.</h3>
+                <cite><a href="https://twitter.com/rauchg/status/807626710350839808">- Guillermo Rauch</a></cite>
+              </div>
+            </blockquote>
+          </div>
+          <aside class="notes">
+          Not to confuse integration with end-to-end testing, which is more focused on UI from a user perspective than testing units together
+          </aside>
+        </section> -->
+
+        <section data-state="hide-footer" data-background-image="img/cartoon/seinfeld-elaine-dance.jpg">
+          <h3 class="h1-style headlineOverImg">Agile</h3>
+          <aside class="notes">
+          Iterative, concurrent development and testing unlike waterfall
+
+          Sweet spot of tests where they stay up to date and you don't comment them out over time
+          </aside>
+        </section>
+
+        <section data-state="hide-footer">
+          <div class="inset-width-wider">
+            <h3 class="h2-style" style="text-align: left;">Encourage ROI by:<br>
+            👉 doing key testing first<br>
+            👉 reducing redundancy<br>
+            👉 automating effectively</h3>
+          </div>
+          <aside class="notes">
+          ROI is all about convincing stakeholders of testing value, shouldn't be the #1 concern.
+          Reducing redundancy: the "DRY" part of pragmatic software dev.
+          Effective: evaluate and plan the most meaningful ways to test
+          </aside>
+        </section>
+
+        <section data-state="hide-footer">
+          <h3 class="h1-style">Test the outcome,<br>not the implementation</h3>
+          <p><a href="http://bit.ly/tautology-tests">http://bit.ly/tautology-tests</a></p>
+          <aside class="notes">
+          Write tests that check your declared interface to the outside world. In an ideal world, you should be able to rewrite the implementation without the test changing
+          </aside>
+        </section>
+
+        <section data-state="hide-footer" data-background-image="img/searls.jpg">
+          <h3 class="offscreen">Talk: How to stop hating your tests</h3>
+          <h4 style="position:absolute;margin-top:700px;width:100%;"><a href="http://bit.ly/stop-hating-your-tests" style="background-color:#000; padding:0.25em;">http://bit.ly/stop-hating-your-tests</a></h4>
+        </section>
+
+        <section data-state="hide-footer darker-background">
+          <ul class="no-bullets">
+            <li><h3 class="h2-style">Arrange</li>
+            <li><h3 class="h2-style">Act</li>
+            <li><h3 class="h2-style">Assert</li>
+          </h3>
+          <aside class="notes">
+          Alternatively: Given, when, then. "Subject" as the thing under test and "Results" as the output.
+          </aside>
+        </section>
+
+        <section data-state="hide-footer">
+          <h3 class="h2-style">Inputs and Outputs</h3>
+          <figure class="code smallish">
+            <pre><code class="javascript">
+  it('should generate a table with multiple columns and rows', () => {
+    const items = [['x', 'y'], ['a', 'b'], ['c', 'd']]
+    const result = AsciiTable.table(items)
+    expect(result).toEqual([
+      '╒═══╤═══╕',
+      '│"x"│"y"│',
+      '╞═══╪═══╡',
+      '│"a"│"b"│',
+      '├───┼───┤',
+      '│"c"│"d"│',
+      '└───┴───┘'].join('\n'))
+  })
+            </code></pre>
+            <figcaption><a href="https://github.com/oskarhane/ascii-data-table/">https://github.com/oskarhane/ascii-data-table/</a></figcaption>
+          </figure>
+        </section>
+
+        <section data-state="hide-footer">
+          <figure><img data-src="img/mocking_overview.png" alt="Difference between an integration and mocking inputs for an isolated unit test" class="plain" style="min-height: 600px;">
+          <figcaption><a href="https://www.mathworks.com/help/matlab/mocking-framework.html">-Matlab Mocking Framework</a></figure>
+          <aside class="notes">
+          The fundamental building block of tests is the “code unit”. What forms a unit can vary between domains and projects. 
+
+          Unit tests isolate behavior so you don't have to involve the whole system. i.e. things behind a login
+          </aside>
+        </section>
+
+        <section>
+          <h3 class="h2-style">Unit test qualities</h3>
+          <ul>
+            <li class="fragment">Test in isolation 👍</li>
+            <li class="fragment">Inputs: stubs/fixture data 👍</li>
+            <li class="fragment">Often headless 👍</li>
+            <li class="fragment">Fast changing of state 👍</li>
+          </ul>
+          <aside class="notes">
+          In aggregate, unit tests provide broad and detailed coverage of the actual code base.
+
+          Compare outputs from known inputs. Fake as much as possible outside the unit’s wall so that bugs in that code don’t affect the test.
+
+          For a unit of code to actually be useful it has to take some inputs, do something, and then produce outputs.
+          </aside>
+        </section>
+
+        <section data-state="hide-footer">
+          <h3 class="h2-style">Here’s a Unit Test</h3>
+          <figure class="code">
+            <pre><code class="javascript">
+  it('should take a node as a parameter and return an object', () => {
+    var node = document.createElement('p');
+    node.textContent = 'Do do do do doo....' +
+      'Bum bum bum bum bum, bum bum bum...';
+
+    var result = new DqElement(node);
+
+    assert.isObject(result);
+  });
+            </code></pre>
+            <figcaption>
+            <a href="https://github.com/dequelabs/axe-core">https://github.com/dequelabs/axe-core</a>
+            </figcaption>
+          </figure>
+          <aside class="notes">
+          https://www.youtube.com/watch?v=w-N4Fd2tncU
+          </aside>
+        </section>
+
+        <!-- <section>
+          <h3>Unit Testing Use Cases</h3>
+          <ul>
+            <li>Individual components</li>
+            <li>Shallow rendering</li>
+            <li>API calls</li>
+          </ul>
+        </section> -->
+
+        <section data-state="hide-footer">
+          <blockquote>
+            <!-- <h3>test, write code, repeat</h3> -->
+            <h3>Unit testing is a balance between development velocity and ROI</h3>
+            <cite><a href="https://twitter.com/ag_dubs/status/916413038944714752">Ashley Williams</a> 💭</cite>
+          </blockquote>
+          <aside class="notes">
+          I love seeing people's thoughts on testing, check out Ashley's tweet storm on how unit tests help her development velocity as compared to integration tests
+          </aside>
+        </section>
+
+        <section>
+          <h3 class="h2-style">Integration Testing</h3>
+          <ul>
+            <li class="fragment">In real browsers 👍</li>
+            <li class="fragment">Selenium Webdriver 👍</li>
+            <li class="fragment">Test common permutations 👍</li>
+            <li class="fragment">A little slower ✌️</li>
+          </ul>
+          <aside class="notes">
+            The test name should describe the outcome–that promise is its interface to the world.
+          </aside>
+        </section>
+
+        <section data-state="hide-footer">
+          <h3 class="h2-style">Integration Test</h3>
+          <figure class="code smaller">
+            <pre><code class="javascript">
+it('should focus the next tab on [arrow right]', async function() {
+  const found = await helper.pressKeyUntil(this.driver, Key.TAB, 
+    _ => document.activeElement.getAttribute('role') === 'tab'
+  );
+  expect(found).to.be.true;
+
+  await this.driver.executeScript(_ => {
+    window.firstTab = document.querySelector('[role="tablist"] > [role="tab"]:nth-of-type(1)');
+    window.secondTab = document.querySelector('[role="tablist"] > [role="tab"]:nth-of-type(2)');
+  });
+  await this.driver.actions().sendKeys(Key.ARROW_RIGHT).perform();
+  const focusedSecondTab = await this.driver.executeScript(_ => 
+    window.secondTab === document.activeElement
+  );
+  expect(focusedSecondTab).to.be.true;
+});
+            </code></pre>
+            <figcaption><a href="https://github.com/GoogleChromeLabs/howto-components/">https://github.com/GoogleChromeLabs/howto-components/</a></figcaption>
+          </figure>
+        </section>
+
+        <section>
+          <h3 class="h2-style">Integration Use Cases</h3>
+          <ul>
+            <li>Composing modules together</li>
+            <li>Focus management</li>
+            <li>Navigation</li>
+            <li>Form validation</li>
+            <li>Page-level functionality</li>
+          </ul>
+        </section>
+
+        <section data-state="hide-footer darker-background">
+          <blockquote>
+            <h3>There’s a gradient from unit to integration based on how many external things the test touches and how many of those you mock.</h3>
+            <cite><a href="https://twitter.com/aeflash/status/916416150929420288">-Alex Early</a></cite>
+          </blockquote>
+          <aside class="notes">
+            The unit provides evidence and examples of its own behavior. Integration tests prove the app works.
+
+            Two sweet spots at opposite ends of the spectrum in specifying individual units vs. integration and testing of the entire system
+          </aside>
+        </section>
+
+        <section>
+          <h2 class="h1-style">Writing Testable Code</h2>
+          <aside class="notes">
+          </aside>
+        </section>
+
+        <section data-state="hide-footer">
+          <h3 class="h2-style">Code needs enough logic to test</h3>
+          <figure class="code">
+          <pre><code class="javascript">
+  var person = {
+    firstName: 'Kimmy',
+    get userName() {
+        return `@${this.firstName}`.toLowerCase();
+    },
+    set username (name) {
+        var fragments = name.toString().split('@');
+        this.firstName = fragments[1];
+    }
+  }
+  person.username = '@aretha';
+  console.log(person.firstName); // aretha
+          </code></pre>
+          </figure>
+          <aside class="notes">
+            When the logic behind the method is complex enough that you feel you need to test extensively to verify that it works.
+
+            Code smell: when there's a bunch of business logic in your tests
+          </aside>
+        </section>
+
+        <section data-state="hide-footer" data-background-image="img/export-function-refactor.png" data-background-size="cover" data-background-position="center top">
+          <h3 class="h2-style headlineOverImg">Code under test<br>must be portable</h3>
+          <aside class="notes">
+          Sometimes it's as simple as exporting a function in your development environment. Or, you might have to refactor the code to isolate it and pass in the inputs.
+          </aside>
+        </section>
+
+        <section data-state="hide-footer" data-background-image="img/cartoon/seinfeld-still-smells.jpg" data-background-size="contain">
+          <h3 class="headlineOverImg h2-style" style="margin-top: 2em;">Tests shouldn’t require <br>one-to-one changes in code</h3>
+          <aside class="notes">
+          Low return-on-investment is when tests get commented out. Excessive testing makes code harder to change.
+
+          Code smell of testing implementation.
+
+          React Fiber (React 16) was a successful example of this, by testing public APIs that had to be maintained for backcompat
+          </aside>
+        </section>
+
+        <section data-state="hide-footer" data-background-image="img/cartoon/90s-compact-car.jpg">
+          <h3 class="h2-style headlineOverImg">Readable and compact</h3>
+          <aside class="notes">
+          "Logic in tests confuses the story of what's being tested" - Searls http://blog.testdouble.com/posts/2015-11-16-how-to-stop-hating-your-tests
+          </aside>
+        </section>
+
+        <section data-state="hide-footer">
+          <h3 class="h2-style">Snapshot Testing</h3>
+          <figure>
+            <img data-src="img/jest-snapshot.png" alt="Jest Snapshot">
+            <figcaption><a href="https://facebook.github.io/jest/blog/2016/07/27/jest-14.html">-Jest docs</a></figcaption>
+          </figure>
+          <aside class="notes">
+          Let's talk briefly about a different technique: Snapshot testing. It's all about testing a payload to see if it changed.
+
+          It's good for regression tests, especially for public APIs or JSON output. But like any testing method, you want to make sure you're using it effectively and testing things of value
+          </aside>
+        </section>
+
+        <section data-state="hide-footer">
+          <h3 class="h2-style">Visual Snapshot Testing</h3>
+          <figure>
+            <img data-src="img/klarna-storyshots.png" alt="Storyshots diff" class="plain">
+            <figcaption><a href="https://engineering.klarna.com/improving-communication-and-confidence-with-visual-snapshot-testing-b04154c3aaf0">-Klarna Engineering</a></figcaption>
+          </figure>
+          <aside class="notes">
+          In a similar way, visual snapshot testing could help you with regressions of visual designs. It's probably only useful for pattern libraries where you'd want to know if something changed. Less useful in projects with a lot of visual churn
+          </aside>
+        </section>
+
+       <!--  <section data-state="hide-footer" data-background-image="img/cauldron.png" data-background-size="contain">
+          <h3 class="offscreen">Deque Pattern Library</h3>
+        </section> -->
+
+        <section>
+          <h3>Front-End Snapshot Testing Tools</h3>
+          <ul>
+            <li>Jest</li>
+            <li>React Storybook</li>
+            <li>Storyshots</li>
+          </ul>
+          <aside class="notes">
+          Jest: unit testing for react, can do snapshots.
+          Storybook: interactive testing for UI components
+          Storyshots: visual snapshot testing with screenshots
+          </aside>
+        </section>
+
+        <section data-state="hide-footer darker-background">
+          <blockquote>
+            <h3>Use tools to <strong>focus</strong> manual testing on exact component states requiring human attention</h3>
+            <cite><a href="https://blog.hichroma.com/visual-testing-the-pragmatic-way-to-test-uis-18c8da617ecf">Visual Testing — the pragmatic way to test UIs</a></cite>
+          </blockquote>
+          <aside class="notes">
+            What level of testing you choose depends on the team and the task at hand
+          </aside>
+        </section>
+
+        <section data-state="hide-footer" data-background-image="img/cartoon/storm-barriers.jpg">
+          <h2 class="headlineOverImg">Accessibility Automation</h2>
+          <aside class="notes">
+          I'll tell you something you DO need if you're developing User Interfaces: ACCESSIBILITY!
+          </aside>
+        </section>
+
+        <section>
+          <h3 class="h2-style">Low-hanging #a11y fruit</h3>
+          <ul>
+            <li>Keyboard support*</li>
+            <li>HTML markup</li>
+            <li>ARIA attributes</li>
+            <li>Color contrast</li>
+          </ul>
+          <aside class="notes">
+          Keyboard support: we covered it in the integration test, but it's also an important thing to test manually
+          </aside>
+        </section>
+
+        <section style="padding-top:0 !important;" data-state="hide-footer no-background">
+          <h3 style="margin-bottom:0;">aXe Extension for Chrome</h3>
+          <p><a href="http://bit.ly/axe-chrome">http://bit.ly/axe-chrome</a></p>
+          <figure>
+            <img data-src="img/axe-chrome-default.png" alt="">
+          </figure>
+          <aside class="notes">
+            Manual testing definitely has its place in accessibility
+          </aside>
+        </section>
+
+        <section data-background-image="img/axe-core-npm.png" data-background-position="top center" data-state="hide-footer">
+          <h3 class="offscreen">axe-core on npm</h3>
+          <aside class="notes">
+          There are other testing libraries but aXe is the one I work on, and we do a lot of work on both the rules and the infrastructure. The latest alpha release supports Shadow DOM
+          </aside>
+        </section>
+
+        <section data-state="hide-footer no-background">
+          <h3>Testing with axe-core</h3>
+          <figure class="code smaller">
+            <pre><code class="javascript">
+    var axe = require('axe-core');
+
+    describe('Component accessibility', () => {
+      it('should have no violations', (done) => {
+        var component = require('some-component');
+
+        axe.run(component, {}, (err, results) => {
+          expect(results.violations.length).toBe(0)
+          done()
+        })
+      })
+    })
+            </code></pre>
+            <figcaption><a href="https://github.com/dequelabs/axe-core">https://github.com/dequelabs/axe-core</a></figcaption>
+          </figure>
+          <aside class="notes">
+          Testing with an API makes sense at the integration level, and this tool will inject into iframes for you
+          </aside>
+        </section>
+
+        <section data-state="hide-footer no-background">
+          <h3>Frame testing with axe-webdriverjs</h3>
+          <figure class="code smaller">
+            <pre><code class="javascript">
+    var AxeBuilder = require('axe-webdriverjs'),
+        WebDriver = require('selenium-webdriver');
+    
+    var driver = new WebDriver.Builder().build();
+
+    describe('Homepage accessibility', () => {
+      it('should have no violations', (done) => {    
+        driver.get('https://localhost:3333')
+          .then(function () {
+            AxeBuilder(driver).analyze((results) => {
+              expect(results.violations.length).toBe(0)
+              done()
+            })
+          })
+      })
+    })
+            </code></pre>
+            <figcaption><a href="https://github.com/dequelabs/axe-webdriverjs">https://github.com/dequelabs/axe-webdriverjs</a></figcaption>
+          </figure>
+          <aside class="notes">
+          Testing with an API makes sense at the integration level, and this tool will inject into iframes for you
+          </aside>
+        </section>
+
+        <section>
+          <h3 class="h2-style">Accessibility Testing Tips</h3>
+          <ul>
+            <li class="fragment">Use your keyboard</li>
+            <li class="fragment">Test multiple states</li>
+            <li class="fragment">Can’t automate everything</li>
+          </ul>
+          <aside class="notes">
+          We can automate 25-50% of accessibility problems depending on the ruleset
+          </aside>
+        </section>
+
+        <!-- <section data-background-image="img/axe-cli.png" data-background-size="cover" data-background-color="#000" data-background-position="left top" data-state="hide-footer">
+          <h3 class="h2-style headlineOverImg">axe-CLI</h3>
+        </section> -->
+
+        <section data-background-image="img/cartoon/dot-north-snow.jpg" data-state="hide-footer">
+          <h3 class="headlineOverImg h2-style">Test and refactor as you go along, don’t get buried with technical debt</h3>
+        </section>
+
+        <section>
+          <h2>Recap</h2>
+          <ul>
+            <li class="fragment">Tests are important for teams</li>
+            <li class="fragment">Protect yourself from yourself</li>
+            <li class="fragment">Spend less time hunting down bugs</li>
+            <li class="fragment">Spend more time shipping code</li>
+            <li class="fragment">It’s about quality software</li>
+          </ul>
+          <aside class="notes">
+          
+          </aside>
+        </section>
+        
+        <!-- <section>
+          <h2>Resources</h2>
+          <ul>
+            <li><a href="https://www.smashingmagazine.com/2012/06/introduction-to-javascript-unit-testing/">Smashing Intro to Front-End Testing</a></li>
+            <li>Accessibility Testing 101 (TODO: write this)</li>
+          </ul>
+        </section> -->
+
+        <section>
+          <h2 class="h1-style">Thanks, SmashingConf!</h2>
+          <ul style="list-style: none; margin:0;">
+            <li style="margin-top: 0.75em;"><img data-src="img/TwitterLogo_white.svg" alt="Twitter" style="width: 1.5em; height: 1.5em; display: inline-block; margin: 0 20px -20px 0;" class="plain"><a href="https://twitter.com/marcysutton">twitter.com/marcysutton</a></li>
+            <li style="margin-top: 0.75em;"><img data-src="img/github-logomark.svg" alt="Github" style="width: 1.5em; height: 1.5em; display: inline-block; margin: 0 20px -20px 0;" class="plain"><a href="https://github.com/marcysutton">github.com/marcysutton</a></li>
+          </ul>
+        </section>
+      </div>
+
+			<footer role="contentinfo">
+        <p class="copyright">What’s the Deal with Testing?!?<br>
+          <a href="http://twitter.com/marcysutton" target="_blank" title="Link opens in a new window">@marcysutton</a> <span aria-hidden="true">/</span> <a href="http://marcysutton.com/smashingBCN17" target="_blank" title="Link opens in a new window">marcysutton.com/smashingBCN17</a></p>
+      </footer>
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.min.js"></script>
+      
+		<script>
+
+			// Full list of configuration options available here:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+        keyboard: {
+          27: function() {} // do something custom when ESC is pressed
+        },
+				// The "normal" size of the presentation, aspect ratio will be preserved
+		    // when the presentation is scaled to fit different resolutions. Can be
+		    // specified using percentage units.
+		    width: 1440,
+		    height: 900,
+
+		    // Factor of the display size that should remain empty around the content
+		    margin: 0,
+
+		    // Bounds for smallest/largest possible scale to apply to content
+		    minScale: 0.2,
+		    maxScale: 1.0,
+
+				theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+				transition: Reveal.getQueryHash().transition || 'fade', // default/cube/page/concave/zoom/linear/fade/none
+
+				// Optional libraries used to extend on reveal.js
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+          { src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+          { src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+          { src: 'plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
+          { src: 'plugin/zoom-js/zoom.js', async: true },
+          { src: 'plugin/notes/notes.js', async: true },
+					{ src: 'plugin/accessibility-helpers/accessibility-helpers.js', async: true, condition: function() { return !!document.body.classList; } }
+				]
+			});
+		</script>
+	</body>
+</html>
