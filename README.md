@@ -1,5 +1,5 @@
-# Innovating with Accessibility in Mind
-[http://marcysutton.github.io/innovating-with-a11y/](http://marcysutton.github.io/innovating-with-a11y/)
+# What’s the Deal with Testing?!
+[http://marcysutton.github.io/whats-the-deal-with-testing/](http://marcysutton.github.io/whats-the-deal-with-testing/)
 
 By [Marcy Sutton](http://marcysutton.com)<br>
 Senior Front-End Engineer at [Deque Systems](http://deque.com)
@@ -8,7 +8,7 @@ Senior Front-End Engineer at [Deque Systems](http://deque.com)
 - github: [@marcysutton](https://github.com/marcysutton)
 
 ## Presenting at:
-* O'Reilly Fluent
+* Smashing Conf Barcelona
 
 ## Installation
 
@@ -23,7 +23,7 @@ Some reveal.js features require that presentations run from a local web server. 
 
 1. Clone the reveal.js repository
 ```
-$ git clone git@github.com:marcysutton/innovating-with-a11y.js.git
+$ git clone git@github.com:marcysutton/whats-the-deal-with-testing.js.git
 ```
 
 1. Navigate to the reveal.js folder
