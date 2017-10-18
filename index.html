@@ -602,8 +602,13 @@ it('should focus the next tab on [arrow right]', async function() {
         <section data-state="hide-footer" data-background-image="img/cartoon/storm-barriers.jpg">
           <h2 class="headlineOverImg">Accessibility Automation</h2>
           <aside class="notes">
-          I'll tell you something you DO need if you're developing User Interfaces: ACCESSIBILITY!
+          I'll tell you something you DO need if you're developing User Interfaces: ACCESSIBILITY! This practice is all about removing barriers for people with disabilities.
           </aside>
+        </section>
+
+        <section data-state="hide-footer light-background" data-background-image="img/ms-persona-spectrum.png">
+          <h3 class="offscreen">Finding Empathy</h3>
+          <p style="position:absolute; margin-top: 800px; width:100%;"><a href="http://bit.ly/microsoft-inclusive-toolkit" style="background-color:#fff;">http://bit.ly/microsoft-inclusive-toolkit</a></p>
         </section>
 
         <section>
@@ -689,13 +694,14 @@ it('should focus the next tab on [arrow right]', async function() {
           </aside>
         </section>
 
-        <section>
+        <section data-state="hide-footer">
           <h3 class="h2-style">Accessibility Testing Tips</h3>
           <ul>
             <li class="fragment">Use your keyboard</li>
             <li class="fragment">Test multiple states</li>
             <li class="fragment">Can’t automate everything</li>
           </ul>
+          <p style="margin-top: 1.5em;" class="fragment"><a href="https://dequeuniversity.com/">https://dequeuniversity.com/</a></p>
           <aside class="notes">
           We can automate 25-50% of accessibility problems depending on the ruleset
           </aside>
