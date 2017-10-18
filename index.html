@@ -447,22 +447,22 @@
           <h3 class="h2-style">Integration Test</h3>
           <figure class="code smaller">
             <pre><code class="javascript">
-it('should focus the next tab on [arrow right]', async function() {
-  const found = await helper.pressKeyUntil(this.driver, Key.TAB, 
-    _ => document.activeElement.getAttribute('role') === 'tab'
-  );
-  expect(found).to.be.true;
+ it('should focus the next tab on [arrow right]', async function() {
+   const found = await helper.pressKeyUntil(this.driver, Key.TAB, 
+     _ => document.activeElement.getAttribute('role') === 'tab'
+   );
+   expect(found).to.be.true;
 
-  await this.driver.executeScript(_ => {
-    window.firstTab = document.querySelector('[role="tablist"] > [role="tab"]:nth-of-type(1)');
-    window.secondTab = document.querySelector('[role="tablist"] > [role="tab"]:nth-of-type(2)');
-  });
-  await this.driver.actions().sendKeys(Key.ARROW_RIGHT).perform();
-  const focusedSecondTab = await this.driver.executeScript(_ => 
-    window.secondTab === document.activeElement
-  );
-  expect(focusedSecondTab).to.be.true;
-});
+   await this.driver.executeScript(_ => {
+     window.firstTab = document.querySelector('[role="tablist"] > [role="tab"]:nth-of-type(1)');
+     window.secondTab = document.querySelector('[role="tablist"] > [role="tab"]:nth-of-type(2)');
+   });
+   await this.driver.actions().sendKeys(Key.ARROW_RIGHT).perform();
+   const focusedSecondTab = await this.driver.executeScript(_ => 
+     window.secondTab === document.activeElement
+   );
+   expect(focusedSecondTab).to.be.true;
+ });
             </code></pre>
             <figcaption><a href="https://github.com/GoogleChromeLabs/howto-components/">https://github.com/GoogleChromeLabs/howto-components/</a></figcaption>
           </figure>
@@ -554,9 +554,9 @@ it('should focus the next tab on [arrow right]', async function() {
             <figcaption><a href="https://facebook.github.io/jest/blog/2016/07/27/jest-14.html">-Jest docs</a></figcaption>
           </figure>
           <aside class="notes">
-          Let's talk briefly about a different technique: Snapshot testing. It's all about testing a payload to see if it changed.
+          Let's talk briefly about a different technique: Snapshot testing. It's all about testing a component or JSON payload to see if it changed.
 
-          It's good for regression tests, especially for public APIs or JSON output. But like any testing method, you want to make sure you're using it effectively and testing things of value
+          It's good for regression tests, especially for public APIs or JSON output. But like any testing method, you want to make sure you're using it effectively and testing things of value. This doesn't work well for TDD or component design but it's more declarative and you don't have to write as many tests
           </aside>
         </section>
 
@@ -576,7 +576,7 @@ it('should focus the next tab on [arrow right]', async function() {
         </section> -->
 
         <section>
-          <h3>Front-End Snapshot Testing Tools</h3>
+          <h3>Snapshot Testing Tools</h3>
           <ul>
             <li>Jest</li>
             <li>React Storybook</li>
@@ -620,7 +620,7 @@ it('should focus the next tab on [arrow right]', async function() {
             <li>Color contrast</li>
           </ul>
           <aside class="notes">
-          Keyboard support: we covered it in the integration test, but it's also an important thing to test manually
+          Keyboard support: we covered it in the integration test, but it's also an important thing to test manually. Test that things are reachable, and focus states are set along with hover.
           </aside>
         </section>
 
@@ -644,21 +644,30 @@ it('should focus the next tab on [arrow right]', async function() {
 
         <section data-state="hide-footer no-background">
           <h3>Testing with axe-core</h3>
-          <figure class="code smaller">
+          <figure class="code smaller hasBg">
+            <div>
             <pre><code class="javascript">
     var axe = require('axe-core');
 
     describe('Component accessibility', () => {
-      it('should have no violations', (done) => {
-        var component = require('some-component');
+      var dropdown = new FancyDropdown();
 
-        axe.run(component, {}, (err, results) => {
+      it('should have no violations on load', (done) => {
+        axe.run(dropdown, {}, (err, results) => {
+          expect(results.violations.length).toBe(0)
+          done()
+        })
+      })</code></pre>
+        <pre class="fragment"><code class="javascript">      it('should have no violations when opened', (done) => {
+        dropdown.open();
+
+        axe.run(dropdown, {}, (err, results) => {
           expect(results.violations.length).toBe(0)
           done()
         })
       })
-    })
-            </code></pre>
+    })</code></pre>
+            </div>
             <figcaption><a href="https://github.com/dequelabs/axe-core">https://github.com/dequelabs/axe-core</a></figcaption>
           </figure>
           <aside class="notes">
@@ -699,7 +708,8 @@ it('should focus the next tab on [arrow right]', async function() {
           <ul>
             <li class="fragment">Use your keyboard</li>
             <li class="fragment">Test multiple states</li>
-            <li class="fragment">Can’t automate everything</li>
+            <li class="fragment">We can’t automate everything</li>
+            <li class="fragment">Start with a checklist</li>
           </ul>
           <p style="margin-top: 1.5em;" class="fragment"><a href="https://dequeuniversity.com/">https://dequeuniversity.com/</a></p>
           <aside class="notes">
@@ -715,7 +725,7 @@ it('should focus the next tab on [arrow right]', async function() {
           <h3 class="headlineOverImg h2-style">Test and refactor as you go along, don’t get buried with technical debt</h3>
         </section>
 
-        <section>
+        <section data-state="hide-footer">
           <h2>Recap</h2>
           <ul>
             <li class="fragment">Tests are important for teams</li>

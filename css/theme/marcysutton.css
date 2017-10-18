@@ -125,6 +125,16 @@ body {
     width: 100%; }
     .reveal figure.code pre code {
       width: 100%; }
+  .reveal figure.code.hasBg > div {
+    background-color: #262626;
+    width: 100%; }
+  .reveal figure.code.hasBg pre {
+    background-color: transparent;
+    padding: 0;
+    margin: 0;
+    box-shadow: none; }
+  .reveal figure.code.hasBg pre + pre {
+    margin-top: 0; }
   .reveal pre {
     background-color: #262626;
     display: block;

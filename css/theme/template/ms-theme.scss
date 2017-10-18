@@ -143,6 +143,21 @@ body {
       width: 100%;
     }
   }
+  figure.code.hasBg {
+    &> div {
+      background-color: lighten($codeBackgroundColor, 15%);
+      width: 100%;
+    }
+    pre {
+      background-color: transparent;
+      padding: 0;
+      margin: 0;
+      box-shadow: none;
+    }
+    pre + pre {
+      margin-top: 0;
+    }
+  }
   pre {
     code.hljs {
       background-color: inherit;
